@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A sweet surprise just for you 💕">
+    <title>💖 สำหรับคนพิเศษบันบันน 💖</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Particle Canvas for floating hearts & stars -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- 🏃‍♂️ Running Person (Change src link to your own photo) -->
+    <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=Boy" alt="Me running" class="running-person"
+        id="runningPerson">
+
+
+    <!-- Click effect container -->
+    <div id="clickEffects"></div>
+
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <div class="loading-heart">💖</div>
+            <p class="loading-text">กำลังเตรียมเซอร์ไพรส์...</p>
+            <div class="loading-bar">
+                <div class="loading-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Player (Floating) -->
+    <div id="musicPlayer" class="music-player">
+        <button id="musicToggleBtn" class="music-toggle" aria-label="Toggle music player">
+            <span class="music-icon">🎵</span>
+            <span class="music-pulse"></span>
+        </button>
+        <div id="musicPanel" class="music-panel">
+            <div class="music-panel-header">
+                <span>🎶 เพลย์ลิสต์</span>
+                <button id="closeMusicPanel" class="close-panel-btn">✕</button>
+            </div>
+            <div class="now-playing">
+                <div class="album-art" id="albumArt">
+                    <span>💿</span>
+                    <div class="vinyl-spin"></div>
+                </div>
+                <div class="song-info">
+                    <p class="song-title" id="songTitle">เลือกเพลงเลย~</p>
+                    <p class="song-artist" id="songArtist">🎵</p>
+                </div>
+            </div>
+            <div class="music-controls">
+                <button id="prevBtn" class="ctrl-btn" aria-label="Previous">⏮</button>
+                <button id="playPauseBtn" class="ctrl-btn play-btn" aria-label="Play/Pause">▶</button>
+                <button id="nextBtn" class="ctrl-btn" aria-label="Next">⏭</button>
+                <button id="muteBtn" class="ctrl-btn" aria-label="Mute">🔊</button>
+            </div>
+            <div class="volume-control">
+                <span>🔈</span>
+                <input type="range" id="volumeSlider" min="0" max="100" value="70" class="volume-slider">
+                <span>🔊</span>
+            </div>
+            <div class="progress-bar-container" id="progressContainer">
+                <input type="range" id="progressBar" class="seek-slider" min="0" max="100" value="0" step="0.1">
+                <span class="time-display" id="timeDisplay">0:00 / 0:00</span>
+            </div>
+            <ul class="playlist" id="playlist">
+                <!-- Populated by JS -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-logo">💖 Surprise</a>
+            <div class="nav-links">
+                <a href="#home" class="nav-link active">หน้าแรก</a>
+                <a href="#quiz" class="nav-link">คำถาม</a>
+                <a href="#secret" class="nav-link">ข้อความ</a>
+                <a href="#fortune" class="nav-link">ดวง</a>
+                <a href="#games" class="nav-link">🎮 เกมส์</a>
+                <a href="#message-sender" class="nav-link">📮 ส่งจดหมาย</a>
+                <a href="#proposal" class="nav-link proposal-nav-link">🎁 เซอร์ไพรส์</a>
+            </div>
+            <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="#home" class="mobile-link">💖 หน้าแรก</a>
+        <a href="#quiz" class="mobile-link">💬 คำถาม</a>
+        <a href="#secret" class="mobile-link">🤫 ข้อความ</a>
+        <a href="#fortune" class="mobile-link">🔮 ดวง</a>
+        <a href="#games" class="mobile-link">🎮 เกมส์</a>
+        <a href="#message-sender" class="mobile-link">📮 ส่งจดหมาย</a>
+        <a href="#proposal" class="mobile-link">🎁 เซอร์ไพรส์</a>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <div class="hero-emoji-row">
+                <span class="bounce-emoji" style="--delay: 0s">🌸</span>
+                <span class="bounce-emoji" style="--delay: 0.2s">💖</span>
+                <span class="bounce-emoji" style="--delay: 0.4s">✨</span>
+                <span class="bounce-emoji" style="--delay: 0.6s">💖</span>
+                <span class="bounce-emoji" style="--delay: 0.8s">🌸</span>
+            </div>
+            <h1 class="hero-title">
+                <span class="gradient-text" id="typewriterText"></span>
+                <span class="cursor">|</span>
+            </h1>
+            <p class="hero-subtitle">เว็บนี้สร้างมาเพื่อคนพิเศษคนเดียว... นั่นคือบันบันนน 💕</p>
+            <div class="hero-buttons">
+                <a href="#quiz" class="btn btn-primary">
+                    <span>💌 เริ่มเลยย!</span>
+                </a>
+                <a href="#secret" class="btn btn-secondary">
+                    <span> ดูข้อความได้เลยย</span>
+                </a>
+            </div>
+            <div class="scroll-indicator">
+                <div class="mouse">
+                    <div class="wheel"></div>
+                </div>
+                <p>เลื่อนลงมาา~</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Love Quiz Section -->
+    <section id="quiz" class="section quiz-section">
+        <div class="container">
+            <h2 class="section-title">💬 คำถามสุดน่ารักก</h2>
+            <p class="section-subtitle">ลองตอบคำถามเหล่านี้ดูนะะ~ 😏</p>
+
+            <div class="quiz-container" id="quizContainer">
+                <!-- Quiz 1: Do you like me? with dodging NO button -->
+                <div class="quiz-card active" data-quiz="1">
+                    <div class="quiz-card-inner">
+                        <div class="quiz-emoji">🥺</div>
+                        <h3>บันบันนชอบเค้ามั้ยยย?</h3>
+                        <div class="quiz-options">
+                            <button class="quiz-btn yes-btn" id="yesBtn" onclick="handleYes()">
+                                ชอบสิ! 💖
+                            </button>
+                            <button class="quiz-btn no-btn" id="noBtn" onmouseover="dodgeButton(this)"
+                                onclick="dodgeButton(this)">
+                                ไม่ชอบ 💔
+                            </button>
+                        </div>
+                        <p class="quiz-hint">💡 ลองกดปุ่ม "ไม่ชอบ" ดูสิ~</p>
+                    </div>
+                </div>
+
+                <!-- Quiz 2: Rate cuteness -->
+                <div class="quiz-card" data-quiz="2">
+                    <div class="quiz-card-inner">
+                        <div class="quiz-emoji">😍</div>
+                        <h3>ให้คะแนนความน่ารักเค้ากันน (1-10)</h3>
+                        <div class="rating-container" id="ratingContainer">
+                            <!-- Generated by JS -->
+                        </div>
+                        <p class="rating-result" id="ratingResult"></p>
+                    </div>
+                </div>
+
+                <!-- Quiz 3: Choose a date -->
+                <div class="quiz-card" data-quiz="3">
+                    <div class="quiz-card-inner">
+                        <div class="quiz-emoji">🍰</div>
+                        <h3>ถ้าอยากไปเดทอยากไปไหนครับบ?</h3>
+                        <div class="date-options">
+                            <button class="date-btn" onclick="handleDate(this, '🎡 สวนสนุก')">
+                                <span class="date-icon">🎡</span>
+                                <span>สวนสนุกกก</span>
+                            </button>
+                            <button class="date-btn" onclick="handleDate(this, '🏖️ ทะเล')">
+                                <span class="date-icon">🏖️</span>
+                                <span>ทะเลล</span>
+                            </button>
+                            <button class="date-btn" onclick="handleDate(this, '🎬 ดูหนัง')">
+                                <span class="date-icon">🎬</span>
+                                <span>ดูหนังงง</span>
+                            </button>
+                            <button class="date-btn" onclick="handleDate(this, '🍜 กินข้าว')">
+                                <span class="date-icon">🍜</span>
+                                <span>กินข้าววว</span>
+                            </button>
+                            <button class="date-btn" onclick="handleDate(this, '🏡 อยู่บ้าน')">
+                                <span class="date-icon">🏡</span>
+                                <span>อยู่บ้านนน</span>
+                            </button>
+                            <button class="date-btn" onclick="handleDate(this, '💫 ไปไหนก็ได้')">
+                                <span class="date-icon">💫</span>
+                                <span>ไปไหนก็ได้้้</span>
+                            </button>
+                        </div>
+                        <p class="date-result" id="dateResult"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Navigation -->
+            <div class="quiz-nav">
+                <button class="quiz-nav-btn" id="prevQuiz" onclick="changeQuiz(-1)" disabled>← ข้อก่อนหน้า</button>
+                <div class="quiz-dots" id="quizDots"></div>
+                <button class="quiz-nav-btn" id="nextQuiz" onclick="changeQuiz(1)">ข้อถัดไป →</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Secret Message Section -->
+    <section id="secret" class="section secret-section">
+        <div class="container">
+            <h2 class="section-title">🤫 ข้อความม</h2>
+            <p class="section-subtitle">กดเปิดซองจดหมายเพื่อดูข้อความมม~</p>
+
+            <div class="envelope-container" id="envelopeContainer" onclick="openEnvelope()">
+                <div class="envelope" id="envelope">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-body">
+                        <div class="envelope-heart">💖</div>
+                    </div>
+                </div>
+                <p class="envelope-hint">👆 แตะเพื่อเปิดด</p>
+            </div>
+
+            <div class="letter-container" id="letterContainer">
+                <div class="letter">
+                    <div class="letter-header">
+                        <span>💌</span>
+                        <span>ถึงคนพิเศษ</span>
+                        <span>💌</span>
+                    </div>
+                    <div class="letter-body" id="letterBody">
+                        <!-- Filled by JS with typewriter effect -->
+                    </div>
+                    <div class="letter-footer">
+                        <p>ด้วยรัก 💕</p>
+                        <p class="letter-date" id="letterDate"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fortune Section -->
+    <section id="fortune" class="section fortune-section">
+        <div class="container">
+            <h2 class="section-title">🔮 ลูกบอลดูดวงครับบ</h2>
+            <p class="section-subtitle">เขย่าลูกบอลแล้วดูดวงรักได้เลยย~</p>
+
+            <div class="fortune-ball-container">
+                <div class="fortune-ball" id="fortuneBall" onclick="shakeFortune()">
+                    <div class="fortune-ball-inner">
+                        <div class="fortune-number" id="fortuneNumber">🔮</div>
+                    </div>
+                    <div class="fortune-glow"></div>
+                </div>
+                <p class="fortune-hint">👆 แตะเพื่อเสี่ยงดวงง</p>
+            </div>
+
+            <div class="fortune-result" id="fortuneResult">
+                <div class="fortune-card" id="fortuneCard">
+                    <div class="fortune-card-emoji" id="fortuneEmoji">💫</div>
+                    <h3 class="fortune-card-title" id="fortuneTitle">ดวงวันนี้เป็นยังไงง</h3>
+                    <p class="fortune-card-text" id="fortuneText">แตะลูกบอลเพื่อดูดวงงง~</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🎮 Games Section -->
+    <section id="games" class="section games-section">
+        <div class="container">
+            <h2 class="section-title">🎮 ห้องเกมส์แสนสนุก</h2>
+            <p class="section-subtitle">เลือกเล่นเกมผ่อนคลายและสะสมคะแนนได้เลยครับ</p>
+
+            <div class="games-grid">
+                <!-- Game 1 Card -->
+                <div class="game-card-main" onclick="openGameModal('memory')">
+                    <div class="game-card-icon">🎴</div>
+                    <h3>จับคู่การ์ด</h3>
+                    <p>จับคู่การ์ดสัญลักษณ์ต่างๆ ให้ครบทุกคู่!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 2 Card -->
+                <div class="game-card-main" onclick="openGameModal('catcher')">
+                    <div class="game-card-icon">🧺</div>
+                    <h3>เกมเก็บหัวใจ</h3>
+                    <p>ควบคุมตะกร้าเพื่อรับหัวใจที่ตกลงมาให้ครบ 15 ดวง!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 3 Card -->
+                <div class="game-card-main" onclick="openGameModal('flappy')">
+                    <div class="game-card-icon">🕊️</div>
+                    <h3>เกมบินหลบสิ่งกีดขวาง</h3>
+                    <p>นำพาหัวใจบินข้ามสิ่งกีดขวางไปให้ไกลที่สุด!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 4 Card -->
+                <div class="game-card-main" onclick="openGameModal('tictactoe')">
+                    <div class="game-card-icon">💖</div>
+                    <h3>เกมโอ-เอ็กซ์ (Tic-Tac-Toe)</h3>
+                    <p>เล่นเกมบอร์ดโอเอ็กซ์แข่งขันกับระบบคอมพิวเตอร์!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 5 Card -->
+                <div class="game-card-main" onclick="openGameModal('blessing')">
+                    <div class="game-card-icon">💌</div>
+                    <h3>บอร์ดฝากข้อความ</h3>
+                    <p>เขียนข้อความหรือคำอวยพรแปะไว้บนบอร์ดวิเศษและกดเปิดอ่านได้นะ!</p>
+                    <button class="btn btn-secondary btn-sm">เขียนข้อความ</button>
+                </div>
+
+                <!-- Game 6 Card -->
+                <div class="game-card-main" onclick="openGameModal('simon')">
+                    <div class="game-card-icon">🌟</div>
+                    <h3>เกมจำจังหวะ (Simon Says)</h3>
+                    <p>จดจำและกดตามลำดับแสงอิโมจิให้ถูกต้อง!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 7 Card -->
+                <div class="game-card-main" onclick="openGameModal('snake')">
+                    <div class="game-card-icon">🐍</div>
+                    <h3>เกมงูเก็บรัก</h3>
+                    <p>บังคับงูสีชมพูให้กินหัวใจเพื่อเติบโตและสะสมคะแนน!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 8 Card -->
+                <div class="game-card-main" onclick="openGameModal('breaker')">
+                    <div class="game-card-icon">🧱</div>
+                    <h3>เกมเด้งบล็อกทำลายอิฐ</h3>
+                    <p>ควบคุมแป้นเพื่อเด้งลูกบอลทำลายอิฐสีชมพูข้างบนให้หมด!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 9 Card -->
+                <div class="game-card-main" onclick="openGameModal('wordsearch')">
+                    <div class="game-card-icon">🔍</div>
+                    <h3>เกมค้นหาคำศัพท์</h3>
+                    <p>มองหาคำศัพท์ที่ซ่อนอยู่ในตารางตัวอักษรเพื่อรับคะแนน!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+
+                <!-- Game 10 Card -->
+                <div class="game-card-main" onclick="openGameModal('pong')">
+                    <div class="game-card-icon">🏓</div>
+                    <h3>เกมพิงปองท้าดวล</h3>
+                    <p>ควบคุมแป้นเพื่อแข่งปิงปองกับคอมพิวเตอร์ให้ชนะ!</p>
+                    <button class="btn btn-secondary btn-sm">เล่นเกมส์</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modals for Games -->
+    <div id="gameModalOverlay" class="game-modal-overlay">
+        <div class="game-modal-backdrop" onclick="closeGameModal()"></div>
+        
+        <!-- Game 1: Memory Match -->
+        <div class="game-modal-card" id="gameModal-memory">
+            <div class="game-modal-header">
+                <h2>🎴 เกมจับคู่การ์ด</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>ครั้งที่พลิก: <strong id="memoryFlips">0</strong></span>
+                    <span>คู่ที่พบ: <strong id="memoryMatches">0</strong>/8</span>
+                </div>
+                <div class="memory-board" id="memoryBoard"></div>
+                <div class="game-overlay-message" id="memoryWinMessage">
+                    <h3>🎉 ยินดีด้วย!</h3>
+                    <p>คุณสามารถจับคู่การ์ดสัญลักษณ์ทั้งหมดได้ถูกต้องครบถ้วนแล้ว 🎉</p>
+                    <button class="btn btn-primary" onclick="resetMemoryGame()">เล่นอีกครั้ง</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 2: Heart Catcher -->
+        <div class="game-modal-card" id="gameModal-catcher">
+            <div class="game-modal-header">
+                <h2>🧺 เกมเก็บหัวใจ</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>คะแนน: <strong id="catcherScore">0</strong>/15</span>
+                    <span>หลุดมือ: <strong id="catcherMissed">0</strong>/3</span>
+                </div>
+                <div class="catcher-container" id="catcherContainer">
+                    <canvas id="catcherCanvas" width="400" height="400"></canvas>
+                    <div class="catcher-controls">
+                        <button class="btn ctrl-arrow-btn" id="catcherLeftBtn">◀ ซ้าย</button>
+                        <button class="btn ctrl-arrow-btn" id="catcherRightBtn">ขวา ▶</button>
+                    </div>
+                </div>
+                <div class="game-overlay-message" id="catcherMessage">
+                    <h3 id="catcherMessageTitle">🎉 ยินดีด้วย! คุณชนะแล้ว</h3>
+                    <p id="catcherMessageDesc">คุณเก็บสะสมหัวใจตกลงตะกร้าได้ครบทั้งหมด 🎉</p>
+                    <button class="btn btn-primary" onclick="resetCatcherGame()">เล่นอีกครั้ง</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 3: Flappy Heart -->
+        <div class="game-modal-card" id="gameModal-flappy">
+            <div class="game-modal-header">
+                <h2>🕊️ เกมบินหลบสิ่งกีดขวาง</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>คะแนน: <strong id="flappyScore">0</strong></span>
+                    <span>คะแนนสูงสุด: <strong id="flappyHighScore">0</strong></span>
+                </div>
+                <div class="flappy-container" id="flappyContainer">
+                    <canvas id="flappyCanvas" width="400" height="400"></canvas>
+                    <div class="flappy-instruction-text">กดคลิก หรือ กด Spacebar หรือแตะหน้าจอเพื่อบินขึ้น</div>
+                </div>
+                <div class="game-overlay-message" id="flappyMessage">
+                    <h3 id="flappyMessageTitle">💥 ชนซะแล้ว!</h3>
+                    <p id="flappyMessageDesc">พยายามบินข้ามสิ่งกีดขวางและหลบก้อนเมฆในการเล่นรอบถัดไปนะ</p>
+                    <button class="btn btn-primary" onclick="resetFlappyGame()">เริ่มใหม่</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 4: Tic-Tac-Toe -->
+        <div class="game-modal-card" id="gameModal-tictactoe">
+            <div class="game-modal-header">
+                <h2>❌ เกมโอ-เอ็กซ์ (Tic-Tac-Toe) ⭕</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>คุณ: 💖 (❌)</span>
+                    <span>คอมพิวเตอร์: ☁️ (⭕)</span>
+                </div>
+                <div class="ttt-board" id="tttBoard">
+                    <div class="ttt-cell" data-index="0"></div>
+                    <div class="ttt-cell" data-index="1"></div>
+                    <div class="ttt-cell" data-index="2"></div>
+                    <div class="ttt-cell" data-index="3"></div>
+                    <div class="ttt-cell" data-index="4"></div>
+                    <div class="ttt-cell" data-index="5"></div>
+                    <div class="ttt-cell" data-index="6"></div>
+                    <div class="ttt-cell" data-index="7"></div>
+                    <div class="ttt-cell" data-index="8"></div>
+                </div>
+                <div class="game-overlay-message" id="tttMessage">
+                    <h3 id="tttMessageTitle">🎉 ยินดีด้วย! คุณชนะแล้ว</h3>
+                    <p id="tttMessageDesc">คุณเอาชนะคอมพิวเตอร์ในเกมโอเอ็กซ์ได้สำเร็จเรียบร้อย 🎉</p>
+                    <button class="btn btn-primary" onclick="resetTttGame()">เล่นอีกครั้ง</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 5: Blessing Box -->
+        <div class="game-modal-card" id="gameModal-blessing">
+            <div class="game-modal-header">
+                <h2>📬 บอร์ดฝากข้อความวิเศษ</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="blessing-form-container">
+                    <div class="blessing-input-row">
+                        <input type="text" id="blessingSender" placeholder="กรอกชื่อเล่นของคุณที่นี่..." class="blessing-input">
+                    </div>
+                    <div class="blessing-input-row">
+                        <textarea id="blessingText" placeholder="เขียนข้อความอวยพรหรือข้อคิดเห็นต่างๆ ตรงนี้ได้เลย..." class="blessing-textarea" rows="3"></textarea>
+                    </div>
+                    <button class="btn btn-primary w-full" onclick="sendBlessing()">แปะโน้ตข้อความ ✨</button>
+                </div>
+
+                <div class="saved-blessings-section">
+                    <h3>💌 บอร์ดแสดงข้อความอวยพร (คลิกโน้ตเพื่ออ่านรายละเอียด)</h3>
+                    <div class="wishing-board" id="wishingBoard">
+                        <!-- populated by JS as colorful sticky notes -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blessing Reader Modal -->
+        <div class="game-modal-card" id="blessingReader">
+            <div class="game-modal-header">
+                <h2>💌 รายละเอียดข้อความอวยพร</h2>
+                <button class="close-modal-btn" onclick="closeBlessingReader()">✕</button>
+            </div>
+            <div class="game-modal-body text-center">
+                <div class="blessing-paper">
+                    <div class="blessing-paper-content" id="readerContent">
+                        <!-- Filled by JS -->
+                    </div>
+                    <div class="blessing-paper-meta">
+                        <p class="blessing-paper-sender" id="readerSender"></p>
+                        <p class="blessing-paper-date" id="readerDate"></p>
+                    </div>
+                </div>
+                <button class="btn btn-secondary" style="margin-top: 15px; width: 100%;" onclick="closeBlessingReader()">ปิดหน้าต่างอ่าน</button>
+            </div>
+        </div>
+
+        <!-- Game 6: Love Simon -->
+        <div class="game-modal-card" id="gameModal-simon">
+            <div class="game-modal-header">
+                <h2>🌟 เกมจำจังหวะ (Simon Says)</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>เลเวล: <strong id="simonLevel">1</strong></span>
+                    <span>ยาวที่สุด: <strong id="simonHighScore">0</strong></span>
+                </div>
+                <div class="simon-board" id="simonBoard">
+                    <div class="simon-pad pad-red" data-index="0">💖</div>
+                    <div class="simon-pad pad-blue" data-index="1">🌸</div>
+                    <div class="simon-pad pad-yellow" data-index="2">🌟</div>
+                    <div class="simon-pad pad-green" data-index="3">🧸</div>
+                </div>
+                <button class="btn btn-primary mt-md" id="simonStartBtn" onclick="startSimonGame()" style="margin-top: 15px; width: 100%;">เริ่มเล่น</button>
+                <div class="game-overlay-message" id="simonMessage">
+                    <h3 id="simonMessageTitle">😢 ผิดจังหวะไปนิด!</h3>
+                    <p id="simonMessageDesc">การกดสัญลักษณ์ลำดับผิดเพี้ยนไป ลองพยายามใหม่อีกรอบนะ</p>
+                    <button class="btn btn-primary" onclick="resetSimonGame()">เล่นอีกครั้ง</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 7: Love Snake -->
+        <div class="game-modal-card" id="gameModal-snake">
+            <div class="game-modal-header">
+                <h2>🐍 เกมงูเก็บรัก</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>คะแนนสะสม: <strong id="snakeScore">0</strong>/10</span>
+                </div>
+                <div class="canvas-game-container">
+                    <canvas id="snakeCanvas" width="300" height="300"></canvas>
+                    <div class="dpad-controls">
+                        <button class="btn dpad-btn" id="snakeUpBtn">▲</button>
+                        <div class="dpad-middle">
+                            <button class="btn dpad-btn" id="snakeLeftBtn">◀</button>
+                            <button class="btn dpad-btn" id="snakeRightBtn">▶</button>
+                        </div>
+                        <button class="btn dpad-btn" id="snakeDownBtn">▼</button>
+                    </div>
+                </div>
+                <div class="game-overlay-message" id="snakeMessage">
+                    <h3 id="snakeMessageTitle">💥 ชนผนังเข้าซะแล้ว!</h3>
+                    <p id="snakeMessageDesc">งูเดินชนกำแพงหรือหางตัวเอง ลองเริ่มต้นเก็บคะแนนใหม่อีกครั้งนะ</p>
+                    <button class="btn btn-primary" onclick="resetSnakeGame()">เริ่มใหม่</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 8: Heart Breaker -->
+        <div class="game-modal-card" id="gameModal-breaker">
+            <div class="game-modal-header">
+                <h2>🧱 เกมเด้งบล็อกทำลายอิฐ</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>คะแนน: <strong id="breakerScore">0</strong></span>
+                </div>
+                <div class="canvas-game-container">
+                    <canvas id="breakerCanvas" width="360" height="320"></canvas>
+                    <div class="breaker-controls">
+                        <button class="btn ctrl-arrow-btn" id="breakerLeftBtn">◀ ซ้าย</button>
+                        <button class="btn ctrl-arrow-btn" id="breakerRightBtn">ขวา ▶</button>
+                    </div>
+                </div>
+                <div class="game-overlay-message" id="breakerMessage">
+                    <h3 id="breakerMessageTitle">💔 บอลตกพื้นซะแล้ว!</h3>
+                    <p id="breakerMessageDesc">ลูกบอลหัวใจตกร่วงลงพื้น ลองกดเริ่มใหม่เพื่อพยายามล้างบอร์ดบล็อกอิฐนะ</p>
+                    <button class="btn btn-primary" onclick="resetBreakerGame()">เริ่มใหม่</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 9: Word Search -->
+        <div class="game-modal-card" id="gameModal-wordsearch">
+            <div class="game-modal-header">
+                <h2>🔍 เกมค้นหาคำศัพท์</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <p style="font-size: 0.85rem; color: var(--text-secondary); text-align: center; margin-bottom: 10px;">
+                    แตะเรียงตัวอักษรเพื่อค้นหาคำศัพท์ในตารางให้ครบ
+                </p>
+                <div class="wordsearch-grid" id="wordsearchGrid"></div>
+                <div class="wordsearch-list" id="wordsearchList">
+                    <div class="wordsearch-word" data-word="BUNBUN">BUNBUN (ชื่อเล่น)</div>
+                    <div class="wordsearch-word" data-word="HEART">HEART (หัวใจ)</div>
+                    <div class="wordsearch-word" data-word="LOVE">LOVE (ความรัก)</div>
+                    <div class="wordsearch-word" data-word="SWEET">SWEET (ความหวาน)</div>
+                </div>
+                <div class="game-overlay-message" id="wordsearchMessage">
+                    <h3>🎉 ยินดีด้วย! ค้นพบคำศัพท์ครบแล้ว</h3>
+                    <p>คุณสามารถมองหาคำศัพท์ที่ซ่อนอยู่ทั้งหมดในตารางสะกดอักษรได้ถูกต้อง 🎉</p>
+                    <button class="btn btn-primary" onclick="resetWordsearchGame()">เล่นอีกครั้ง</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game 10: Love Pong -->
+        <div class="game-modal-card" id="gameModal-pong">
+            <div class="game-modal-header">
+                <h2>🏓 เกมพิงปองท้าดวล</h2>
+                <button class="close-modal-btn" onclick="closeGameModal()">✕</button>
+            </div>
+            <div class="game-modal-body">
+                <div class="game-stats">
+                    <span>คุณ: <strong id="pongPlayerScore">0</strong>/3</span>
+                    <span>คอมพิวเตอร์: <strong id="pongCpuScore">0</strong>/3</span>
+                </div>
+                <div class="canvas-game-container">
+                    <canvas id="pongCanvas" width="360" height="300"></canvas>
+                    <div class="pong-controls">
+                        <button class="btn ctrl-arrow-btn" id="pongUpBtn">▲ ขึ้น</button>
+                        <button class="btn ctrl-arrow-btn" id="pongDownBtn">ลง ▼</button>
+                    </div>
+                </div>
+                <div class="game-overlay-message" id="pongMessage">
+                    <h3 id="pongMessageTitle">🎉 ยินดีด้วย! คุณชนะแล้ว</h3>
+                    <p id="pongMessageDesc">คุณสามารถตีปิงปองเอาชนะคอมพิวเตอร์สะสมคะแนนครบ 3 คะแนนได้สำเร็จ 🎉</p>
+                    <button class="btn btn-primary" onclick="resetPongGame()">เล่นอีกครั้ง</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 📮 Send Message Section (Discord Webhook Integration) -->
+    <section id="message-sender" class="section message-sender-section">
+        <div class="container">
+            <h2 class="section-title">📮 ส่งข้อความถึงผู้รับ</h2>
+            <p class="section-subtitle">พิมพ์ข้อความที่ต้องการส่งตรงเข้าช่องทาง Discord Webhook หลังบ้านได้เลยครับ</p>
+
+            <div class="message-sender-card">
+                <div class="message-sender-form">
+                    <div class="sender-input-row">
+                        <input type="text" id="directSenderName" placeholder="กรอกชื่อเล่นของคุณ..." class="sender-input">
+                    </div>
+                    <div class="sender-input-row">
+                        <textarea id="directMessageText" placeholder="พิมพ์ข้อความรายละเอียดที่นี่..." class="sender-textarea" rows="5"></textarea>
+                    </div>
+                    
+                    
+                    
+                    <button class="btn btn-primary w-full" onclick="sendDirectMessage()">ส่งข้อความทันที ✨📮</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 🎁 Surprise Section (LOCKED until target date) -->
+    <section id="proposal" class="section proposal-section">
+        <div class="container">
+            <h2 class="section-title">🎁 เซอร์ไพรส์...</h2>
+            <p class="section-subtitle">มีอะไรพิเศษรอบันบันอยู่นะะ~</p>
+
+            <!-- LOCK OVERLAY -->
+            <div class="proposal-lock-overlay" id="proposalLockOverlay">
+                <div class="lock-card">
+                    <div class="lock-icon-container">
+                        <div class="lock-icon" id="lockIcon">🔒</div>
+                        <div class="lock-glow"></div>
+                        <div class="lock-ring"></div>
+                    </div>
+                    <h3 class="lock-title">ยังไม่ถึงเวลาา~ 🤫</h3>
+                    <p class="lock-subtitle">คำถามสำคัญจะปลดล็อกเมื่อถึงเวลาที่กำหนด</p>
+
+                    <!-- Countdown Timer -->
+                    <div class="countdown-container" id="countdownContainer">
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="countDays">00</div>
+                            <div class="countdown-label">วัน</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="countHours">00</div>
+                            <div class="countdown-label">ชั่วโมง</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="countMinutes">00</div>
+                            <div class="countdown-label">นาที</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-unit">
+                            <div class="countdown-number" id="countSeconds">00</div>
+                            <div class="countdown-label">วินาที</div>
+                        </div>
+                    </div>
+
+                    <div class="lock-target-date" id="lockTargetDate"></div>
+
+                    <div class="lock-tease">
+                        <p>💕 ใจเย็นๆ นะ... สิ่งดีๆ ต้องรอออ~</p>
+                        <div class="lock-tease-hearts">
+                            <span style="--d:0s">💖</span>
+                            <span style="--d:0.3s">💗</span>
+                            <span style="--d:0.6s">💕</span>
+                            <span style="--d:0.9s">💖</span>
+                            <span style="--d:1.2s">💗</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UNLOCKED PROPOSAL CONTENT -->
+            <div class="proposal-content" id="proposalContent">
+                <div class="proposal-stage" id="proposalStage">
+                    <!-- Stage 1: Build-up -->
+                    <div class="proposal-step active" data-step="1">
+                        <div class="proposal-card">
+                            <div class="proposal-sparkles">
+                                <span>✨</span><span>💫</span><span>⭐</span><span>✨</span><span>💫</span>
+                            </div>
+                            <div class="proposal-emoji-big">🥺</div>
+                            <h3 class="proposal-question">บันบันน... ฉันมีเรื่องอยากบอก</h3>
+                            <p class="proposal-subtext">ตั้งแต่วันที่เจอบันบันน เค้ารู้สึกว่า...</p>
+                            <button class="btn btn-primary proposal-next-btn" onclick="nextProposalStep()">
+                                <span>บอกมาเลย~ 💕</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stage 2: Confession -->
+                    <div class="proposal-step" data-step="2">
+                        <div class="proposal-card">
+                            <div class="proposal-sparkles">
+                                <span>🌸</span><span>💖</span><span>🦋</span><span>💖</span><span>🌸</span>
+                            </div>
+                            <div class="proposal-emoji-big">💓</div>
+                            <h3 class="proposal-question">เค้าชอบบันบันนมากๆ เลย...</h3>
+                            <p class="proposal-subtext">ชอบรอยยิ้มบันบันน ชอบเสียงหัวเราะบันบันน ชอบทุกอย่างของบันบันน
+                            </p>
+                            <button class="btn btn-primary proposal-next-btn" onclick="nextProposalStep()">
+                                <span>แล้วไงต่อ...? 🥰</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Stage 3: THE Question -->
+                    <div class="proposal-step" data-step="3">
+                        <div class="proposal-card proposal-final-card">
+                            <div class="proposal-sparkles big-sparkles">
+                                <span>✨</span><span>💖</span><span>⭐</span><span>💕</span><span>🌟</span>
+                                <span>💗</span><span>✨</span><span>💖</span><span>⭐</span><span>💕</span>
+                            </div>
+                            <div class="proposal-ring-box">
+                                <div class="ring-box-lid"></div>
+                                <div class="ring-box-body">
+                                    <span class="ring-emoji">💍</span>
+                                </div>
+                                <div class="ring-glow"></div>
+                            </div>
+                            <h3 class="proposal-big-question">เป็นแฟนกันมั้ย? 💖</h3>
+                            <p class="proposal-subtext">เค้าสัญญาจะทำให้บันบันนยิ้มทุกวัน~</p>
+                            <div class="proposal-answer-btns">
+                                <button class="btn btn-proposal-yes" id="proposalYesBtn" onclick="handleProposalYes()">
+                                    💖 เอาสิ! ตกลง!
+                                </button>
+                                <button class="btn btn-proposal-no" id="proposalNoBtn"
+                                    onmouseover="dodgeProposalNo(this)" onclick="dodgeProposalNo(this)">
+                                    💔 ไม่เอา
+                                </button>
+                            </div>
+                            <p class="proposal-hint">💡 ลองกดปุ่ม "ไม่เอา" ดูสิ~</p>
+                        </div>
+                    </div>
+
+                    <!-- Stage 4: Celebration -->
+                    <div class="proposal-step" data-step="4">
+                        <div class="proposal-card celebration-card">
+                            <div class="celebration-emojis">
+                                <span class="cel-emoji" style="--cd:0s">🎉</span>
+                                <span class="cel-emoji" style="--cd:0.1s">💖</span>
+                                <span class="cel-emoji" style="--cd:0.2s">🎊</span>
+                                <span class="cel-emoji" style="--cd:0.3s">💕</span>
+                                <span class="cel-emoji" style="--cd:0.4s">🎉</span>
+                            </div>
+                            <div class="proposal-emoji-big celebration-heart">💖</div>
+                            <h3 class="proposal-big-question celebration-text">เย้!! เราเป็นแฟนกันแล้ว!!</h3>
+                            <p class="proposal-subtext">วันนี้เป็นวันที่ดีที่สุดเลย~ 🥺💕</p>
+                            <div class="anniversary-counter">
+                                <p>📅 วันที่เริ่มต้นของเรา</p>
+                                <p class="anniversary-date" id="anniversaryDate"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-hearts">
+                <span>💖</span><span>💕</span><span>💗</span><span>💖</span><span>💕</span>
+            </div>
+            <p>สร้างด้วย ❤️ เพื่อคนพิเศษษ</p>
+            <p class="footer-small">© 2026 | Made with love 💕</p>
+        </div>
+    </footer>
+
+    <!-- Floating Call Button -->
+    <div id="callButtonContainer" class="call-btn-container">
+        <button id="callToggleBtn" class="call-toggle" onclick="openCallModal()" aria-label="Call me">
+            <span class="call-icon">📞</span>
+            <span class="call-pulse"></span>
+        </button>
+    </div>
+
+    <!-- Call Notification Modal -->
+    <div id="callModal" class="game-modal-overlay">
+        <div class="game-modal-backdrop" onclick="closeCallModal()"></div>
+        <div class="game-modal-card" id="callModalCard">
+            <div class="game-modal-header">
+                <h2>📞 คิดถึงกดโทร</h2>
+                <button class="close-modal-btn" onclick="closeCallModal()">✕</button>
+            </div>
+            <div class="game-modal-body" style="text-align: center; padding: 20px;">
+                <div style="font-size: 4.5rem; margin-bottom: 15px; animation: bounceEmoji 2.5s infinite; display: inline-block;">📞</div>
+                <h3 style="margin-bottom: 10px; font-size: 1.3rem;">โทรหาเค้าหน่อยย~</h3>
+                <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 20px; font-size: 0.95rem;">
+                    อยากคุยด้วยหรือคิดถึงเค้าหรอครับ? กดส่งสัญญาณด้านล่างนี้ได้เลย แล้วระบบจะแจ้งเตือนส่งข้อความด่วนเข้า Discord ให้เค้ารีบโทรหาบันบันครับ! 💖
+                </p>
+                <button class="btn btn-primary w-full" id="sendCallSignalBtn" onclick="sendCallSignal()">ส่งสัญญาณโทรหา 🚀</button>
+                <div id="callStatusMessage" class="call-success-message" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confetti Canvas -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
